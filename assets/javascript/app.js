@@ -88,12 +88,18 @@ var qanda = [
 
 // Next we will want a function that displays the the question and answers onto our page
 function displayToPage(number) {
+    resetTime();
     qn = number;
     $('#question').html("Question " + (number + 1) + ": " + qanda[number].question)
     $('#a').html("<button id='answer' class='A'>" + "A" + "</button>" + " " + qanda[number].A)
     $('#b').html("<button id='answer' class='B'>" + "B" + "</button>" + " " + qanda[number].B)
     $('#c').html("<button id='answer' class='C'>" + "C" + "</button>" + " " + qanda[number].C)
     $('#d').html("<button id='answer' class='D'>" + "D" + "</button>" + " " + qanda[number].D)
+    //We will also add our displayed time here
+    dispTime();
+
+
+
 }
 // Make sure the document is ready, then we can click away!
 $(document).ready(function () {
@@ -109,6 +115,7 @@ $(document).ready(function () {
             alert("You got it right!");
             qn++; //We will only use this if we're wrapping the whole trivia into a loop
             right++;
+            clearInterval(intervalId);//We will be resetting the time and interval anyway
             // console.log(qn);
         }
         else if (ans !== anslet) {//If not, then they answered incorrectly
@@ -117,12 +124,60 @@ $(document).ready(function () {
             alert("You got it wrong! The answer was: " + qanda[qn][anslet]);
             qn++; //We will only use this if we're wrapping the whole trivia into a loop
             wrong++;
+            clearInterval(intervalId);
             // console.log(qn);
             //
         }
 
     })
 })
+// All code below here is dealing with the timer and the timing aspect of displaying the questions
+var time = 60;
+function dispTime() {
+
+    setTimeout(oneMin, 60000);
+    intervalId = setInterval(count, 1000);
+
+}
 
 
 displayToPage(0);
+function count() {
+    time--;
+    var converted = timeConverter(time);
+    // console.log(converted);
+    $("#display").text(converted);
+}
+function resetTime() {
+    time = 60
+    $("#display").text("01:00");
+}
+
+function oneMin() {
+    alert("You ran out of time!");
+    clearInterval(intervalId);
+
+
+}
+
+function timeConverter(t) {
+
+    var minutes = Math.floor(t / 60);
+    var seconds = t - (minutes * 60);
+
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+
+    if (minutes === 0) {
+        minutes = "00";
+    }
+    else if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+
+    return minutes + ":" + seconds;
+}
+//We will need a timeOut function to space in between the questions
+setTimeout(fiveSeconds, 0);
+

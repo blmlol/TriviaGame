@@ -2,3 +2,7 @@ img{
     width:345.5px;
     height:300px;
 }
+.container {
+    border: solid blue 20px;
+    background-color: rgb(231, 208, 208); 
+}
